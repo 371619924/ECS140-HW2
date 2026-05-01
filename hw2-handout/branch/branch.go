@@ -7,9 +7,29 @@ import (
 )
 
 func branchCount(fn *ast.FuncDecl) uint {
-	// TODO: Write the branchCount function,
-	// count the number of branching statements in function fn
-	return 12345
+	if fn == nil || fn.Body == nil {
+		return 0
+	}
+
+	var count uint = 0
+
+	ast.Inspect(fn.Body, func(n ast.Node) bool {
+		switch n.(type) {
+		case *ast.IfStmt:
+			count += 1
+		case *ast.SwitchStmt:
+			count += 1
+		case *ast.TypeSwitchStmt:
+			count += 1
+		case *ast.ForStmt:
+			count += 1
+		case *ast.RangeStmt:
+			count += 1
+		}
+		return true
+	})
+
+	return count
 }
 
 // ComputeBranchFactors returns a map from the name of the function in the given
